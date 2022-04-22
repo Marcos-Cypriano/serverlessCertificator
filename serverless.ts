@@ -17,18 +17,27 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
-    lambdaHashingVersion: "20201221",
-    iamRoleStatements: [
-      {
-        Effect: "Allow",
-        Action: ["dynamodb:*"],
-        Resource: ["*"]
-      },
-      {
-        Effect: "Allow",
-        Action: ["s3:*"],
-        Resource: ["*"]
+    iam: {
+      role: {
+        statements: [
+          {
+            Effect: "Allow",
+            Action: ["dynamodb:*"],
+            Resource: ["*"]
+          },
+          {
+            Effect: "Allow",
+            Action: ["s3:*"],
+            Resource: ["*"]
+          }
+        ]
       }
+    }
+  },
+  package: {
+    individually: false,
+    patterns: [
+      "./src/templates/**"
     ]
   },
   // import the function via paths
@@ -40,7 +49,6 @@ const serverlessConfiguration: AWS = {
           http: {
             path: "generateCertificate",
             method: "post",
-
             cors: true
           }
         }
@@ -53,14 +61,12 @@ const serverlessConfiguration: AWS = {
           http: {
             path: "verifyCertificate/{id}",
             method: "get",
-
             cors: true
           }
         }
       ]
     }
   },
-  package: { individually: true },
   custom: {
     esbuild: {
       bundle: true,
@@ -71,7 +77,9 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
-      external: ["chrome-aws-lambda"]
+      external: [
+        "chrome-aws-lambda"
+      ]
     },
     dynamodb: {
       stages: ["dev", "local"],
