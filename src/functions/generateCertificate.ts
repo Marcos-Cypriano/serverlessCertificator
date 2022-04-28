@@ -13,7 +13,7 @@ interface ICreateCertificate {
     grade: string
 }
 
-interface Itemplate {
+interface ITemplate {
     id: string
     name: string
     grade: string
@@ -21,7 +21,7 @@ interface Itemplate {
     date: string
 }
 
-const compileTemplate = async (data: Itemplate) => {
+const compileTemplate = async (data: ITemplate) => {
     const filePath = join(process.cwd(), "src", "templates", "certificate.hbs")
 
     const html = readFileSync(filePath, "utf-8")
@@ -57,7 +57,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     const medalPath = join(process.cwd(), "src", "templates", "selo.png")
     const medal = readFileSync(medalPath, "base64")
 
-    const data: Itemplate = {
+    const data: ITemplate = {
         name,
         id,
         grade,
