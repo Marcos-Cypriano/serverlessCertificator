@@ -42,17 +42,29 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     const userAlreadyExists = response.Items[0]
 
-    if (!userAlreadyExists) {
-        await document.put({
-            TableName: "users_certificate",
-            Item: {
-                id,
-                name,
-                grade,
-                created_at: new Date().getTime()
-            }
-        }).promise()
+    if (userAlreadyExists) {
+        return {
+            statusCode: 400,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true
+            },
+            body: JSON.stringify({
+                message: "Já existe um certificado para este ID já existente! \n ID's certificate already exists!",
+                url: `https://maccertificatenodejs.s3.amazonaws.com/${id}.pdf`
+            })
+        }
     }
+
+    await document.put({
+        TableName: "users_certificate",
+        Item: {
+            id,
+            name,
+            grade,
+            created_at: new Date().getTime()
+        }
+    }).promise()
 
     const medalPath = join(process.cwd(), "src", "templates", "selo.png")
     const medal = readFileSync(medalPath, "base64")
@@ -103,8 +115,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     return {
         statusCode: 201,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true
+        },
         body: JSON.stringify({
-            message: "Certificado criado com sucesso!",
+            message: "Certificado criado com sucesso! \n Cretificate Created",
             url: `https://maccertificatenodejs.s3.amazonaws.com/${id}.pdf`
         })
     }

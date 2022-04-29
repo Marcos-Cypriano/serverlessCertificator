@@ -24,8 +24,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     if (userCertificate) {
         return {
             statusCode: 201,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true
+            },
             body: JSON.stringify({
-                message: "Certificado válido!",
+                message: "Certificado válido! \n Valid Certificate!",
                 name: userCertificate.name,
                 url: `https://maccertificatenodejs.s3.amazonaws.com/${id}.pdf`
             })
@@ -34,8 +38,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     return {
         statusCode: 400,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true
+        },
         body: JSON.stringify({
-            message: "Certificado inválido!"
+            message: "Id inválido! \n Invalid Id"
         })
     }
 }
