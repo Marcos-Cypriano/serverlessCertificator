@@ -29,7 +29,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
                 'Access-Control-Allow-Credentials': true
             },
             body: JSON.stringify({
-                message: "Certificado válido! \n Valid Certificate!",
+                message: "Certificado válido! Valid Certificate!",
                 name: userCertificate.name,
                 url: `https://maccertificatenodejs.s3.amazonaws.com/${id}.pdf`
             })
@@ -43,7 +43,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             'Access-Control-Allow-Credentials': true
         },
         body: JSON.stringify({
-            message: "Id inválido! \n Invalid Id"
+            message: "Id inválido! Invalid Id!"
         })
     }
 }

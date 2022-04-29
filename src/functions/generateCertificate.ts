@@ -50,7 +50,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
                 'Access-Control-Allow-Credentials': true
             },
             body: JSON.stringify({
-                message: "Já existe um certificado para este ID já existente! \n ID's certificate already exists!",
+                message: "Já existe um certificado para este ID já existente! ID's certificate already exists!",
                 url: `https://maccertificatenodejs.s3.amazonaws.com/${id}.pdf`
             })
         }
@@ -120,7 +120,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             'Access-Control-Allow-Credentials': true
         },
         body: JSON.stringify({
-            message: "Certificado criado com sucesso! \n Cretificate Created",
+            message: "Certificado criado com sucesso! Cretificate Created!",
             url: `https://maccertificatenodejs.s3.amazonaws.com/${id}.pdf`
         })
     }
