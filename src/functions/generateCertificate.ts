@@ -6,6 +6,7 @@ import { join } from "path"
 import { readFileSync } from "fs"
 import chromium from "chrome-aws-lambda"
 import { S3 } from "aws-sdk"
+import * as uuid from "uuid"
 
 interface ICreateCertificate {
     id: string
@@ -31,6 +32,19 @@ const compileTemplate = async (data: ITemplate) => {
 
 export const handler: APIGatewayProxyHandler = async (event) => {
     const { id, name, grade } = JSON.parse(event.body) as ICreateCertificate
+    
+    if (!uuid.validate(id)) {
+        return {
+            statusCode: 400,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true
+            },
+            body: JSON.stringify({
+                message: "ID não é um uuid! ID is not uuid!"
+            })
+        }
+    }
 
     const response = await document.query({
         TableName: "users_certificate",
@@ -44,7 +58,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     if (userAlreadyExists) {
         return {
-            statusCode: 400,
+            statusCode: 406,
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': true
